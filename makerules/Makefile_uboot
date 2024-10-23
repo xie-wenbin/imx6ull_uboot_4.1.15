@@ -1,0 +1,40 @@
+# U-Boot targets for imx6ull 
+
+u-boot:
+	@echo ===================================
+	@echo    Building U-boot for $(ARMV7)
+	@echo ===================================
+	$(MAKE) -j -C $(UBOOT_SRC_DIR) ARCH=arm CROSS_COMPILE=$(CROSS_COMPILE) $(UBOOT_MACHINE) \
+		O=$(UBOOT_A7_BUILD)
+	$(MAKE) -j -C $(UBOOT_SRC_DIR) ARCH=arm CROSS_COMPILE=$(CROSS_COMPILE) \
+		O=$(UBOOT_A7_BUILD)
+
+u-boot_menuconfig:
+	@echo ===================================
+	@echo    Building U-boot menuconfig for $(ARMV7)
+	@echo ===================================
+	$(MAKE) -j -C $(UBOOT_SRC_DIR) \
+		ARCH=arm CROSS_COMPILE=$(CROSS_COMPILE) $(UBOOT_MACHINE) \
+		O=$(UBOOT_A7_BUILD)
+	$(MAKE) -j -C $(UBOOT_SRC_DIR) \
+		ARCH=arm CROSS_COMPILE=$(CROSS_COMPILE) menuconfig\
+		O=$(UBOOT_A7_BUILD)
+	$(MAKE) -j -C $(UBOOT_SRC_DIR) \
+		ARCH=arm CROSS_COMPILE=$(CROSS_COMPILE) \
+		O=$(UBOOT_A7_BUILD)
+
+u-boot_clean:
+	@echo ===================================
+	@echo    Cleaning U-boot for $(ARMV7)
+	@echo ===================================
+	$(MAKE) -C $(UBOOT_SRC_DIR) CROSS_COMPILE=$(CROSS_COMPILE) \
+		distclean \
+		O=$(UBOOT_A7_BUILD)
+
+u-boot_install:
+	@echo ===================================
+	@echo    Copy U-boot binary
+	@echo ===================================
+	mkdir -p $(PROJ_BINARY_OUT)
+	cp -rf $(UBOOT_SRC_DIR)/$(UBOOT_A7_BUILD)/u-boot.bin $(PROJ_BINARY_OUT)/
+	cp -rf $(UBOOT_SRC_DIR)/$(UBOOT_A7_BUILD)/u-boot.imx $(PROJ_BINARY_OUT)/
